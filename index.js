@@ -1,8 +1,17 @@
 var https = require('https');
 
-// This script requires two environment variables:
+// This is an example Lambda function that queries data from New Relic Insights
+// ... and then sends performance data back to Insights.
+
+// 1. [ LAMBDA ] ---> Query        ---->  [ INSIGHTS ]
+// 2. [ LAMBDA ] <--- Query Result ----   [ INSIGHTS ]
+// 3. [ LAMBDA ] ---> Perf Data    --->   [ INSIGHTS COLLECTOR ]
+// 4. [ LAMBDA ] ---> Query Result --->   [ API GATEWAY ] --> [ BROWSER ]
+
+// This script requires three environment variables:
 // INSIGHTS_QUERY_KEY - query key for insights
 // NEWRELIC_ACCOUNT_ID - account id associated with insights account
+// INSIGHTS_INSERT_KEY - insert key for insights
 
 // Query insights
 var queryInsights = function(cb) {
