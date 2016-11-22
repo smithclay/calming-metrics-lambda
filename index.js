@@ -4,6 +4,8 @@ var https = require('https');
 // INSIGHTS_QUERY_KEY - query key for insights
 // NEWRELIC_ACCOUNT_ID - account id associated with insights account
 
+var insightsQuery = 'SELECT average(cpuSystemPercent), average(loadAverageOneMinute), average(memoryFreeBytes) from SystemSample facet hostname SINCE 5 minutes ago';
+
 var requestOptions = {
   host: 'insights-api.newrelic.com',
   headers: {
@@ -11,7 +13,7 @@ var requestOptions = {
   },
   method: 'GET',
   port: 443,
-  path: `/v1/accounts/${process.env.NEWRELIC_ACCOUNT_ID}/query?nrql=SELECT%20average%28cpuSystemPercent%29%2C%20average%28loadAverageOneMinute%29%2C%20average%28memoryFreeBytes%29%20from%20SystemSample%20facet%20hostname%20SINCE%205%20minutes%20ago`
+  path: `/v1/accounts/${process.env.NEWRELIC_ACCOUNT_ID}/query?nrql=${encodeURIComponent(insightsQuery)}`
 };
 
 exports.handler = (event, context, callback) => {
